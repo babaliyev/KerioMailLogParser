@@ -225,10 +225,10 @@ namespace EldarMailLogParse
                                 startCalculatingTime = false;
 
                                 //check if the answer is too late
-                                Double lateDuration = Math.Round((DateTime.Parse(dr["Date"].ToString()).TimeOfDay.TotalHours - sendTime.TimeOfDay.TotalHours), 2);
-                                if (lateDuration > controlTime)
+                                TimeSpan lateDuration =DateTime.Parse(dr["Date"].ToString()) - sendTime;
+                                if (lateDuration.TotalHours > controlTime)
                                 {
-                                    dataSetMain.CheckResult.AddCheckResultRow(itemFromWithDateTime[0], sendTime, itemToWithDateTime[0], DateTime.Parse(dr["Date"].ToString()), "too late", lateDuration);
+                                    dataSetMain.CheckResult.AddCheckResultRow(itemFromWithDateTime[0], sendTime, itemToWithDateTime[0], DateTime.Parse(dr["Date"].ToString()), "too late",  Math.Round(lateDuration.TotalHours,2));
                                 }
                             }
                             else
@@ -287,7 +287,7 @@ namespace EldarMailLogParse
                 sHeaders = sHeaders.ToString() + Convert.ToString(dGV.Columns[j].HeaderText) + "\t";
             stOutput += sHeaders + "\r\n";
             // Export data.
-            for (int i = 0; i < dGV.RowCount - 1; i++)
+            for (int i = 0; i < dGV.RowCount; i++)
             {
                 string stLine = "";
                 for (int j = 0; j < dGV.Rows[i].Cells.Count; j++)
