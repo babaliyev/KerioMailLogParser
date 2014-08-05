@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSetMain" targetNamespace="http://tempuri.org/DataSetMain.xsd" xmlns:mstns="http://tempuri.org/DataSetMain.xsd" xmlns="http://tempuri.org/DataSetMain.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSetMain" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSetMain" msprop:Generator_UserDSName="DataSetMain">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTableLogEmail" msprop:Generator_TableClassName="DataTableLogEmailDataTable" msprop:Generator_TableVarName="tableDataTableLogEmail" msprop:Generator_TablePropName="DataTableLogEmail" msprop:Generator_RowDeletingName="DataTableLogEmailRowDeleting" msprop:Generator_RowChangingName="DataTableLogEmailRowChanging" msprop:Generator_RowEvHandlerName="DataTableLogEmailRowChangeEventHandler" msprop:Generator_RowDeletedName="DataTableLogEmailRowDeleted" msprop:Generator_UserTableName="DataTableLogEmail" msprop:Generator_RowChangedName="DataTableLogEmailRowChanged" msprop:Generator_RowEvArgName="DataTableLogEmailRowChangeEvent" msprop:Generator_RowClassName="DataTableLogEmailRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="From" msprop:Generator_ColumnVarNameInTable="columnFrom" msprop:Generator_ColumnPropNameInRow="From" msprop:Generator_ColumnPropNameInTable="FromColumn" msprop:Generator_UserColumnName="From" type="xs:string" minOccurs="0" />
+              <xs:element name="To" msprop:Generator_ColumnVarNameInTable="columnTo" msprop:Generator_ColumnPropNameInRow="To" msprop:Generator_ColumnPropNameInTable="ToColumn" msprop:Generator_UserColumnName="To" type="xs:string" minOccurs="0" />
+              <xs:element name="Date" msprop:Generator_ColumnVarNameInTable="columnDate" msprop:Generator_ColumnPropNameInRow="Date" msprop:Generator_ColumnPropNameInTable="DateColumn" msprop:Generator_UserColumnName="Date" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="IsMain" msprop:Generator_ColumnVarNameInTable="columnIsMain" msprop:Generator_ColumnPropNameInRow="IsMain" msprop:Generator_ColumnPropNameInTable="IsMainColumn" msprop:Generator_UserColumnName="IsMain" type="xs:boolean" default="true" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CheckResult" msprop:Generator_TableClassName="CheckResultDataTable" msprop:Generator_TableVarName="tableCheckResult" msprop:Generator_TablePropName="CheckResult" msprop:Generator_RowDeletingName="CheckResultRowDeleting" msprop:Generator_RowChangingName="CheckResultRowChanging" msprop:Generator_RowEvHandlerName="CheckResultRowChangeEventHandler" msprop:Generator_RowDeletedName="CheckResultRowDeleted" msprop:Generator_UserTableName="CheckResult" msprop:Generator_RowChangedName="CheckResultRowChanged" msprop:Generator_RowEvArgName="CheckResultRowChangeEvent" msprop:Generator_RowClassName="CheckResultRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="FromMail" msprop:Generator_ColumnVarNameInTable="columnFromMail" msprop:Generator_ColumnPropNameInRow="FromMail" msprop:Generator_ColumnPropNameInTable="FromMailColumn" msprop:Generator_UserColumnName="FromMail" type="xs:string" minOccurs="0" />
+              <xs:element name="FromTime" msprop:Generator_ColumnVarNameInTable="columnFromTime" msprop:Generator_ColumnPropNameInRow="FromTime" msprop:Generator_ColumnPropNameInTable="FromTimeColumn" msprop:Generator_UserColumnName="FromTime" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="AnsweredMail" msprop:Generator_ColumnVarNameInTable="columnAnsweredMail" msprop:Generator_ColumnPropNameInRow="AnsweredMail" msprop:Generator_ColumnPropNameInTable="AnsweredMailColumn" msprop:Generator_UserColumnName="AnsweredMail" type="xs:string" minOccurs="0" />
+              <xs:element name="AnswerTime" msprop:Generator_ColumnVarNameInTable="columnAnswerTime" msprop:Generator_ColumnPropNameInRow="AnswerTime" msprop:Generator_ColumnPropNameInTable="AnswerTimeColumn" msprop:Generator_UserColumnName="AnswerTime" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="LateStatus" msprop:Generator_ColumnVarNameInTable="columnLateStatus" msprop:Generator_ColumnPropNameInRow="LateStatus" msprop:Generator_ColumnPropNameInTable="LateStatusColumn" msprop:Generator_UserColumnName="LateStatus" type="xs:string" minOccurs="0" />
+              <xs:element name="LateDuration" msprop:Generator_ColumnVarNameInTable="columnLateDuration" msprop:Generator_ColumnPropNameInRow="LateDuration" msprop:Generator_ColumnPropNameInTable="LateDurationColumn" msprop:Generator_UserColumnName="LateDuration" type="xs:double" default="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
