@@ -20,6 +20,7 @@ namespace EldarMailLogParse
         {
             InitializeComponent();
             loadSettings();
+            progressBar.Value = 0;
         }
 
         private void buttonOpenFile_Click(object sender, EventArgs e)
@@ -42,10 +43,21 @@ namespace EldarMailLogParse
 
             try
             {
+                progressBar.Maximum = 100;
+
+                progressBar.Value = 5;
+                Application.DoEvents();
+
                 string localFileName = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath),"log.txt");
                 File.Copy(textBoxFilePath.Text, localFileName, true);
 
+                progressBar.Value = 10;
+                Application.DoEvents();
+
                 string fileContent = File.ReadAllText(localFileName);
+
+                progressBar.Value = 20;
+                Application.DoEvents();
 
                 string f1 = @"\[(?<datetime>(\d{1,2})/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/(\d{2,4})\s+(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(:([0-5]?[0-9])))\][^\[\]]+?From:\s+<(?<from>\S+?)>[\s\S]+?To:\s+<(?<to>\S+?)>";
 
@@ -65,13 +77,24 @@ namespace EldarMailLogParse
                 DateTime emailDate = DateTime.MinValue;
 
                 //clear data table before fill
-                dataSetMain.DataTableLogEmail.Clear();
+                dataSetMain.DataTableLogEmail.Clear();              
+                
 
-                foreach (Match match in R.Matches(fileContent))
+                MatchCollection mc = R.Matches(fileContent);
+                
+
+                int t = mc.Count/50*100;
+                progressBar.Maximum = mc.Count + t;
+                progressBar.Value = t;
+                Application.DoEvents();
+
+                foreach (Match match in mc)
                 {
-                    
-                    from = match.Groups["from"].ToString().Trim();
-                    to =  match.Groups["to"].ToString().Trim();
+                    progressBar.Value++;
+                    Application.DoEvents();
+
+                    from = match.Groups["from"].ToString().Trim().ToLower().Replace("'","");
+                    to = match.Groups["to"].ToString().Trim().ToLower().Replace("'", "");
                     emailDate = DateTime.ParseExact(match.Groups["datetime"].ToString(), "dd/MMM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
                     isMain = _from != from || _emailDate != emailDate;
@@ -88,6 +111,8 @@ namespace EldarMailLogParse
                     if (dateTimePickerTo.Value == dateTimePickerTo.MinDate || dateTimePickerTo.Value < emailDate)
                         dateTimePickerTo.Value = emailDate;
                 }
+
+                progressBar.Value = 0;
 
                 //fill filter comboboxes by data table data
                 comboBoxFromMailToAddList.DataSource = dataSetMain.DataTableLogEmail.DefaultView.ToTable(true, "From");
@@ -157,6 +182,9 @@ namespace EldarMailLogParse
 
         private void check(int type)
         {
+            progressBar.Maximum = 100000000;
+            progressBar.Value = 0;
+
             dataSetMain.CheckResult.Clear();
 
             List<String> fromControl = new List<string>();
@@ -184,15 +212,22 @@ namespace EldarMailLogParse
                     break;
             }
 
+            int checkStep = fromControl.Count * toControl.Count;
+            int emailMax = progressBar.Maximum / checkStep;
+
+            int progresCount = 0;
+
             foreach (var iFrom in fromControl)
             {
+
                 //split by #
                 string[] itemFromWithDateTime = iFrom.ToString().Split(new char[] { '#', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                 Double controlTime = 0;
 
                 foreach (string iTo in toControl)
-                {
+                {                   
+
                     string[] itemToWithDateTime = iTo.ToString().Split(new char[] { '#', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                     switch (type)
@@ -214,10 +249,24 @@ namespace EldarMailLogParse
                     bool startCalculatingTime = false;
                     DateTime sendTime = DateTime.MinValue;
 
-                    foreach (DataSetMain.DataTableLogEmailRow dr in dataSetMain.DataTableLogEmail.Select("(From = '" + itemFromWithDateTime[0] + "' AND To = '" + itemToWithDateTime[0] + "' OR From = '" + itemToWithDateTime[0] + "' AND To = '" + itemFromWithDateTime[0] + "')"
-                        + " AND Date >= '" + dateTimePickerFrom.Value.ToString("dd/MMM/yyyy HH:mm:ss") + "' AND Date <='" + dateTimePickerTo.Value.ToString("dd/MMM/yyyy HH:mm:ss") + "'"
-                        + (!checkBoxIncludeCC.Checked ? " AND IsMain=1" : ""), "Date ASC"))
+                    DataSetMain.DataTableLogEmailRow[] drs = (DataSetMain.DataTableLogEmailRow[])dataSetMain.DataTableLogEmail.Select("(From = '" + itemFromWithDateTime[0] + "' AND To = '" + itemToWithDateTime[0] + "'"+((!checkBoxIncludeCC.Checked ? " AND IsMain=1" : "") +
+                        " OR From = '" + itemToWithDateTime[0] + "' AND To = '" + itemFromWithDateTime[0] + "'" +  ")"
+                        + " AND Date >= '" + dateTimePickerFrom.Value.ToString("dd/MMM/yyyy") + " 00:00:00' AND Date<='" + dateTimePickerTo.Value.ToString("dd/MMM/yyyy") + " 23:59:59'"
+                        ), "Date ASC");
+
+                    
+
+                    int emailStep=0;
+                    if (drs.Length == 0)
+                        emailStep = emailMax;
+                    else
+                        emailStep = emailMax / drs.Length;
+
+                    foreach (DataSetMain.DataTableLogEmailRow dr in drs)
                     {
+                        progressBar.Value = progressBar.Value + emailStep;
+                        Application.DoEvents();
+
                         if(startCalculatingTime == true)
                         {
                             if (dr["From"].ToString() == itemToWithDateTime[0].ToString())
@@ -251,8 +300,13 @@ namespace EldarMailLogParse
                     {
                         dataSetMain.CheckResult.AddCheckResultRow(itemFromWithDateTime[0], Convert.ToDateTime(sendTime), itemToWithDateTime[0], DateTime.MinValue, "not answered", 0);
                     }
+
+                    progresCount++;
+                    progressBar.Value = progresCount * emailMax - 1;
+                    Application.DoEvents();
                 }
             }
+            progressBar.Value = 0;
         }
 
         private void buttonCheckTo_Click(object sender, EventArgs e)

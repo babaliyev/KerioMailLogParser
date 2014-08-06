@@ -30,6 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonExportResult = new System.Windows.Forms.Button();
+            this.buttonCheckFromTo = new System.Windows.Forms.Button();
+            this.buttonCheckTo = new System.Windows.Forms.Button();
             this.buttonClearFilters = new System.Windows.Forms.Button();
             this.buttonCheckFrom = new System.Windows.Forms.Button();
             this.buttonParse = new System.Windows.Forms.Button();
@@ -38,11 +41,31 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataTableLogEmailDataGridView = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsMain = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dataTableLogEmailBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.dataSetMain = new EldarMailLogParse.DataSetMain();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.checkBoxIncludeCC = new System.Windows.Forms.CheckBox();
+            this.dateTimePickerTo = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePickerFrom = new System.Windows.Forms.DateTimePicker();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.checkResultDataGridView = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LateDuration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.checkResultBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.numericUpDownIntervalTo = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
             this.listBoxToList = new System.Windows.Forms.ListBox();
             this.buttonDellTo = new System.Windows.Forms.Button();
             this.buttonAddTo = new System.Windows.Forms.Button();
@@ -58,42 +81,20 @@
             this.label3 = new System.Windows.Forms.Label();
             this.comboBoxFromMailToAddList = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.IsMain = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.LateDuration = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.numericUpDownIntervalTo = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
-            this.buttonCheckTo = new System.Windows.Forms.Button();
-            this.buttonCheckFromTo = new System.Windows.Forms.Button();
-            this.buttonExportResult = new System.Windows.Forms.Button();
-            this.checkBoxIncludeCC = new System.Windows.Forms.CheckBox();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.checkResultBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dataSetMain = new EldarMailLogParse.DataSetMain();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataTableLogEmailBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.dateTimePickerFrom = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePickerTo = new System.Windows.Forms.DateTimePicker();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataTableLogEmailDataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTableLogEmailBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSetMain)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.checkResultDataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.checkResultBindingSource)).BeginInit();
             this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalTo)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalFrom)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalTo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.checkResultBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataSetMain)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTableLogEmailBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -115,6 +116,37 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Operations";
+            // 
+            // buttonExportResult
+            // 
+            this.buttonExportResult.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonExportResult.Location = new System.Drawing.Point(1021, 20);
+            this.buttonExportResult.Name = "buttonExportResult";
+            this.buttonExportResult.Size = new System.Drawing.Size(108, 23);
+            this.buttonExportResult.TabIndex = 10;
+            this.buttonExportResult.Text = "Export Result";
+            this.buttonExportResult.UseVisualStyleBackColor = true;
+            this.buttonExportResult.Click += new System.EventHandler(this.buttonExportResult_Click);
+            // 
+            // buttonCheckFromTo
+            // 
+            this.buttonCheckFromTo.Location = new System.Drawing.Point(861, 20);
+            this.buttonCheckFromTo.Name = "buttonCheckFromTo";
+            this.buttonCheckFromTo.Size = new System.Drawing.Size(108, 23);
+            this.buttonCheckFromTo.TabIndex = 9;
+            this.buttonCheckFromTo.Text = "Check From X To";
+            this.buttonCheckFromTo.UseVisualStyleBackColor = true;
+            this.buttonCheckFromTo.Click += new System.EventHandler(this.buttonCheckFromTo_Click);
+            // 
+            // buttonCheckTo
+            // 
+            this.buttonCheckTo.Location = new System.Drawing.Point(747, 20);
+            this.buttonCheckTo.Name = "buttonCheckTo";
+            this.buttonCheckTo.Size = new System.Drawing.Size(108, 23);
+            this.buttonCheckTo.TabIndex = 8;
+            this.buttonCheckTo.Text = "Check To";
+            this.buttonCheckTo.UseVisualStyleBackColor = true;
+            this.buttonCheckTo.Click += new System.EventHandler(this.buttonCheckTo_Click);
             // 
             // buttonClearFilters
             // 
@@ -178,9 +210,9 @@
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox2.Controls.Add(this.dataTableLogEmailDataGridView);
-            this.groupBox2.Location = new System.Drawing.Point(12, 78);
+            this.groupBox2.Location = new System.Drawing.Point(12, 109);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(520, 620);
+            this.groupBox2.Size = new System.Drawing.Size(520, 589);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Email Log";
@@ -201,8 +233,49 @@
             this.dataTableLogEmailDataGridView.Location = new System.Drawing.Point(3, 16);
             this.dataTableLogEmailDataGridView.Name = "dataTableLogEmailDataGridView";
             this.dataTableLogEmailDataGridView.ReadOnly = true;
-            this.dataTableLogEmailDataGridView.Size = new System.Drawing.Size(514, 601);
+            this.dataTableLogEmailDataGridView.Size = new System.Drawing.Size(514, 570);
             this.dataTableLogEmailDataGridView.TabIndex = 0;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "Date";
+            this.dataGridViewTextBoxColumn3.HeaderText = "Date";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "From";
+            this.dataGridViewTextBoxColumn1.HeaderText = "From";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 140;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "To";
+            this.dataGridViewTextBoxColumn2.HeaderText = "To";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Width = 140;
+            // 
+            // IsMain
+            // 
+            this.IsMain.DataPropertyName = "IsMain";
+            this.IsMain.HeaderText = "IsMain";
+            this.IsMain.Name = "IsMain";
+            this.IsMain.ReadOnly = true;
+            this.IsMain.Width = 50;
+            // 
+            // dataTableLogEmailBindingSource
+            // 
+            this.dataTableLogEmailBindingSource.DataMember = "DataTableLogEmail";
+            this.dataTableLogEmailBindingSource.DataSource = this.dataSetMain;
+            // 
+            // dataSetMain
+            // 
+            this.dataSetMain.DataSetName = "DataSetMain";
+            this.dataSetMain.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // groupBox3
             // 
@@ -218,12 +291,54 @@
             this.groupBox3.Controls.Add(this.groupBox6);
             this.groupBox3.Controls.Add(this.groupBox5);
             this.groupBox3.Controls.Add(this.groupBox4);
-            this.groupBox3.Location = new System.Drawing.Point(538, 78);
+            this.groupBox3.Location = new System.Drawing.Point(538, 109);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(725, 620);
+            this.groupBox3.Size = new System.Drawing.Size(725, 589);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Check options";
+            // 
+            // checkBoxIncludeCC
+            // 
+            this.checkBoxIncludeCC.AutoSize = true;
+            this.checkBoxIncludeCC.Location = new System.Drawing.Point(480, 24);
+            this.checkBoxIncludeCC.Name = "checkBoxIncludeCC";
+            this.checkBoxIncludeCC.Size = new System.Drawing.Size(78, 17);
+            this.checkBoxIncludeCC.TabIndex = 11;
+            this.checkBoxIncludeCC.Text = "Include CC";
+            this.checkBoxIncludeCC.UseVisualStyleBackColor = true;
+            // 
+            // dateTimePickerTo
+            // 
+            this.dateTimePickerTo.Location = new System.Drawing.Point(300, 21);
+            this.dateTimePickerTo.Name = "dateTimePickerTo";
+            this.dateTimePickerTo.Size = new System.Drawing.Size(144, 20);
+            this.dateTimePickerTo.TabIndex = 13;
+            // 
+            // dateTimePickerFrom
+            // 
+            this.dateTimePickerFrom.Location = new System.Drawing.Point(82, 21);
+            this.dateTimePickerFrom.Name = "dateTimePickerFrom";
+            this.dateTimePickerFrom.Size = new System.Drawing.Size(145, 20);
+            this.dateTimePickerFrom.TabIndex = 12;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(248, 24);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(46, 13);
+            this.label9.TabIndex = 11;
+            this.label9.Text = "To Date";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(20, 24);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(56, 13);
+            this.label8.TabIndex = 10;
+            this.label8.Text = "From Date";
             // 
             // groupBox7
             // 
@@ -233,7 +348,7 @@
             this.groupBox7.Controls.Add(this.checkResultDataGridView);
             this.groupBox7.Location = new System.Drawing.Point(6, 286);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(713, 328);
+            this.groupBox7.Size = new System.Drawing.Size(713, 297);
             this.groupBox7.TabIndex = 9;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "CheckResult";
@@ -256,8 +371,59 @@
             this.checkResultDataGridView.Location = new System.Drawing.Point(3, 16);
             this.checkResultDataGridView.Name = "checkResultDataGridView";
             this.checkResultDataGridView.ReadOnly = true;
-            this.checkResultDataGridView.Size = new System.Drawing.Size(707, 309);
+            this.checkResultDataGridView.Size = new System.Drawing.Size(707, 278);
             this.checkResultDataGridView.TabIndex = 0;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.DataPropertyName = "FromMail";
+            this.dataGridViewTextBoxColumn4.HeaderText = "FromMail";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            this.dataGridViewTextBoxColumn4.Width = 150;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.DataPropertyName = "FromTime";
+            this.dataGridViewTextBoxColumn5.HeaderText = "FromTime";
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.DataPropertyName = "AnsweredMail";
+            this.dataGridViewTextBoxColumn6.HeaderText = "ToMail";
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
+            this.dataGridViewTextBoxColumn6.Width = 150;
+            // 
+            // dataGridViewTextBoxColumn7
+            // 
+            this.dataGridViewTextBoxColumn7.DataPropertyName = "AnswerTime";
+            this.dataGridViewTextBoxColumn7.HeaderText = "AnswerTime";
+            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            this.dataGridViewTextBoxColumn8.DataPropertyName = "LateStatus";
+            this.dataGridViewTextBoxColumn8.HeaderText = "LateStatus";
+            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            this.dataGridViewTextBoxColumn8.ReadOnly = true;
+            this.dataGridViewTextBoxColumn8.Width = 70;
+            // 
+            // LateDuration
+            // 
+            this.LateDuration.DataPropertyName = "LateDuration";
+            this.LateDuration.HeaderText = "LateDuration";
+            this.LateDuration.Name = "LateDuration";
+            this.LateDuration.ReadOnly = true;
+            this.LateDuration.Width = 70;
+            // 
+            // checkResultBindingSource
+            // 
+            this.checkResultBindingSource.DataMember = "CheckResult";
+            this.checkResultBindingSource.DataSource = this.dataSetMain;
             // 
             // groupBox6
             // 
@@ -265,7 +431,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox6.Location = new System.Drawing.Point(6, 323);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(602, 146);
+            this.groupBox6.Size = new System.Drawing.Size(602, 115);
             this.groupBox6.TabIndex = 8;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Checked result";
@@ -286,6 +452,24 @@
             this.groupBox5.TabIndex = 6;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "To Options";
+            // 
+            // numericUpDownIntervalTo
+            // 
+            this.numericUpDownIntervalTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numericUpDownIntervalTo.Location = new System.Drawing.Point(214, 37);
+            this.numericUpDownIntervalTo.Name = "numericUpDownIntervalTo";
+            this.numericUpDownIntervalTo.Size = new System.Drawing.Size(75, 20);
+            this.numericUpDownIntervalTo.TabIndex = 6;
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(207, 21);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(93, 13);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "time interval (hour)";
             // 
             // listBoxToList
             // 
@@ -452,217 +636,50 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "time interval (hour)";
             // 
-            // IsMain
+            // progressBar
             // 
-            this.IsMain.DataPropertyName = "IsMain";
-            this.IsMain.HeaderText = "IsMain";
-            this.IsMain.Name = "IsMain";
-            this.IsMain.ReadOnly = true;
-            this.IsMain.Width = 50;
-            // 
-            // LateDuration
-            // 
-            this.LateDuration.DataPropertyName = "LateDuration";
-            this.LateDuration.HeaderText = "LateDuration";
-            this.LateDuration.Name = "LateDuration";
-            this.LateDuration.ReadOnly = true;
-            this.LateDuration.Width = 70;
-            // 
-            // numericUpDownIntervalTo
-            // 
-            this.numericUpDownIntervalTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDownIntervalTo.Location = new System.Drawing.Point(214, 37);
-            this.numericUpDownIntervalTo.Name = "numericUpDownIntervalTo";
-            this.numericUpDownIntervalTo.Size = new System.Drawing.Size(75, 20);
-            this.numericUpDownIntervalTo.TabIndex = 6;
-            // 
-            // label5
-            // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(207, 21);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(93, 13);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "time interval (hour)";
-            // 
-            // buttonCheckTo
-            // 
-            this.buttonCheckTo.Location = new System.Drawing.Point(747, 20);
-            this.buttonCheckTo.Name = "buttonCheckTo";
-            this.buttonCheckTo.Size = new System.Drawing.Size(108, 23);
-            this.buttonCheckTo.TabIndex = 8;
-            this.buttonCheckTo.Text = "Check To";
-            this.buttonCheckTo.UseVisualStyleBackColor = true;
-            this.buttonCheckTo.Click += new System.EventHandler(this.buttonCheckTo_Click);
-            // 
-            // buttonCheckFromTo
-            // 
-            this.buttonCheckFromTo.Location = new System.Drawing.Point(861, 20);
-            this.buttonCheckFromTo.Name = "buttonCheckFromTo";
-            this.buttonCheckFromTo.Size = new System.Drawing.Size(108, 23);
-            this.buttonCheckFromTo.TabIndex = 9;
-            this.buttonCheckFromTo.Text = "Check From X To";
-            this.buttonCheckFromTo.UseVisualStyleBackColor = true;
-            this.buttonCheckFromTo.Click += new System.EventHandler(this.buttonCheckFromTo_Click);
-            // 
-            // buttonExportResult
-            // 
-            this.buttonExportResult.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExportResult.Location = new System.Drawing.Point(1021, 20);
-            this.buttonExportResult.Name = "buttonExportResult";
-            this.buttonExportResult.Size = new System.Drawing.Size(108, 23);
-            this.buttonExportResult.TabIndex = 10;
-            this.buttonExportResult.Text = "Export Result";
-            this.buttonExportResult.UseVisualStyleBackColor = true;
-            this.buttonExportResult.Click += new System.EventHandler(this.buttonExportResult_Click);
-            // 
-            // checkBoxIncludeCC
-            // 
-            this.checkBoxIncludeCC.AutoSize = true;
-            this.checkBoxIncludeCC.Location = new System.Drawing.Point(480, 24);
-            this.checkBoxIncludeCC.Name = "checkBoxIncludeCC";
-            this.checkBoxIncludeCC.Size = new System.Drawing.Size(78, 17);
-            this.checkBoxIncludeCC.TabIndex = 11;
-            this.checkBoxIncludeCC.Text = "Include CC";
-            this.checkBoxIncludeCC.UseVisualStyleBackColor = true;
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.DataPropertyName = "FromMail";
-            this.dataGridViewTextBoxColumn4.HeaderText = "FromMail";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.ReadOnly = true;
-            this.dataGridViewTextBoxColumn4.Width = 150;
-            // 
-            // dataGridViewTextBoxColumn5
-            // 
-            this.dataGridViewTextBoxColumn5.DataPropertyName = "FromTime";
-            this.dataGridViewTextBoxColumn5.HeaderText = "FromTime";
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            this.dataGridViewTextBoxColumn5.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn6
-            // 
-            this.dataGridViewTextBoxColumn6.DataPropertyName = "AnsweredMail";
-            this.dataGridViewTextBoxColumn6.HeaderText = "ToMail";
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.ReadOnly = true;
-            this.dataGridViewTextBoxColumn6.Width = 150;
-            // 
-            // dataGridViewTextBoxColumn7
-            // 
-            this.dataGridViewTextBoxColumn7.DataPropertyName = "AnswerTime";
-            this.dataGridViewTextBoxColumn7.HeaderText = "AnswerTime";
-            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-            this.dataGridViewTextBoxColumn7.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn8
-            // 
-            this.dataGridViewTextBoxColumn8.DataPropertyName = "LateStatus";
-            this.dataGridViewTextBoxColumn8.HeaderText = "LateStatus";
-            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
-            this.dataGridViewTextBoxColumn8.ReadOnly = true;
-            this.dataGridViewTextBoxColumn8.Width = 70;
-            // 
-            // checkResultBindingSource
-            // 
-            this.checkResultBindingSource.DataMember = "CheckResult";
-            this.checkResultBindingSource.DataSource = this.dataSetMain;
-            // 
-            // dataSetMain
-            // 
-            this.dataSetMain.DataSetName = "DataSetMain";
-            this.dataSetMain.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.DataPropertyName = "Date";
-            this.dataGridViewTextBoxColumn3.HeaderText = "Date";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "From";
-            this.dataGridViewTextBoxColumn1.HeaderText = "From";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.Width = 140;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "To";
-            this.dataGridViewTextBoxColumn2.HeaderText = "To";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Width = 140;
-            // 
-            // dataTableLogEmailBindingSource
-            // 
-            this.dataTableLogEmailBindingSource.DataMember = "DataTableLogEmail";
-            this.dataTableLogEmailBindingSource.DataSource = this.dataSetMain;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(20, 24);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(56, 13);
-            this.label8.TabIndex = 10;
-            this.label8.Text = "From Date";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(248, 24);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(46, 13);
-            this.label9.TabIndex = 11;
-            this.label9.Text = "To Date";
-            // 
-            // dateTimePickerFrom
-            // 
-            this.dateTimePickerFrom.Location = new System.Drawing.Point(82, 21);
-            this.dateTimePickerFrom.Name = "dateTimePickerFrom";
-            this.dateTimePickerFrom.Size = new System.Drawing.Size(145, 20);
-            this.dateTimePickerFrom.TabIndex = 12;
-            // 
-            // dateTimePickerTo
-            // 
-            this.dateTimePickerTo.Location = new System.Drawing.Point(300, 21);
-            this.dateTimePickerTo.Name = "dateTimePickerTo";
-            this.dateTimePickerTo.Size = new System.Drawing.Size(144, 20);
-            this.dateTimePickerTo.TabIndex = 13;
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Location = new System.Drawing.Point(13, 80);
+            this.progressBar.MarqueeAnimationSpeed = 100000;
+            this.progressBar.Maximum = 100000;
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(1250, 23);
+            this.progressBar.Step = 1;
+            this.progressBar.TabIndex = 3;
+            this.progressBar.Value = 50000;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1275, 710);
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.MinimumSize = new System.Drawing.Size(1010, 602);
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Home";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataTableLogEmailDataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTableLogEmailBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSetMain)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.checkResultDataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.checkResultBindingSource)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalTo)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalFrom)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalTo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.checkResultBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataSetMain)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTableLogEmailBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -721,6 +738,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.DateTimePicker dateTimePickerTo;
         private System.Windows.Forms.DateTimePicker dateTimePickerFrom;
+        private System.Windows.Forms.ProgressBar progressBar;
     }
 }
 
