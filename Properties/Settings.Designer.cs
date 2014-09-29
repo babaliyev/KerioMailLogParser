@@ -56,5 +56,53 @@ namespace EldarMailLogParse.Properties {
                 this["logPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string db_host {
+            get {
+                return ((string)(this["db_host"]));
+            }
+            set {
+                this["db_host"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string db_name {
+            get {
+                return ((string)(this["db_name"]));
+            }
+            set {
+                this["db_name"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string db_login {
+            get {
+                return ((string)(this["db_login"]));
+            }
+            set {
+                this["db_login"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string db_pwd {
+            get {
+                return ((string)(this["db_pwd"]));
+            }
+            set {
+                this["db_pwd"] = value;
+            }
+        }
     }
 }

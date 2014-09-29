@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -20,7 +21,6 @@ namespace EldarMailLogParse
         {
             InitializeComponent();
             loadSettings();
-            progressBar.Value = 0;
         }
 
         private void buttonOpenFile_Click(object sender, EventArgs e)
@@ -43,21 +43,14 @@ namespace EldarMailLogParse
 
             try
             {
-                progressBar.Maximum = 100;
 
-                progressBar.Value = 5;
-                Application.DoEvents();
 
                 string localFileName = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath),"log.txt");
                 File.Copy(textBoxFilePath.Text, localFileName, true);
 
-                progressBar.Value = 10;
-                Application.DoEvents();
 
                 string fileContent = File.ReadAllText(localFileName);
 
-                progressBar.Value = 20;
-                Application.DoEvents();
 
                 string f1 = @"\[(?<datetime>(\d{1,2})/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/(\d{2,4})\s+(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(:([0-5]?[0-9])))\][^\[\]]+?From:\s+<(?<from>\S+?)>[\s\S]+?To:\s+<(?<to>\S+?)>";
 
@@ -83,15 +76,9 @@ namespace EldarMailLogParse
                 MatchCollection mc = R.Matches(fileContent);
                 
 
-                int t = mc.Count/50*100;
-                progressBar.Maximum = mc.Count + t;
-                progressBar.Value = t;
-                Application.DoEvents();
 
                 foreach (Match match in mc)
                 {
-                    progressBar.Value++;
-                    Application.DoEvents();
 
                     from = match.Groups["from"].ToString().Trim().ToLower().Replace("'","");
                     to = match.Groups["to"].ToString().Trim().ToLower().Replace("'", "");
@@ -99,7 +86,7 @@ namespace EldarMailLogParse
 
                     isMain = _from != from || _emailDate != emailDate;
 
-                    dataSetMain.DataTableLogEmail.AddDataTableLogEmailRow(from,to, emailDate,isMain);
+                    dataSetMain.DataTableLogEmail.AddDataTableLogEmailRow(from,to, emailDate,isMain,0);
 
                     _from = from;
                     _to = to;
@@ -112,7 +99,6 @@ namespace EldarMailLogParse
                         dateTimePickerTo.Value = emailDate;
                 }
 
-                progressBar.Value = 0;
 
                 //fill filter comboboxes by data table data
                 comboBoxFromMailToAddList.DataSource = dataSetMain.DataTableLogEmail.DefaultView.ToTable(true, "From");
@@ -182,8 +168,11 @@ namespace EldarMailLogParse
 
         private void check(int type)
         {
-            progressBar.Maximum = 100000000;
-            progressBar.Value = 0;
+            DataSetMain.DataTableLogEmailDataTable logDataTable = new DataSetMain.DataTableLogEmailDataTable();
+            DataSetMain.DataTableLogEmailRow[] drsTemp = (DataSetMain.DataTableLogEmailRow[])dataSetMain.DataTableLogEmail.Select("Date >= '" + dateTimePickerFrom.Value.ToString("dd/MMM/yyyy") + " 00:00:00' AND Date<='" + dateTimePickerTo.Value.ToString("dd/MMM/yyyy") + " 23:59:59'", "Date ASC");
+
+            foreach (DataSetMain.DataTableLogEmailRow r in drsTemp)
+                logDataTable.AddDataTableLogEmailRow(r.From, r.To, r.Date, r.IsMain, r.ID);
 
             dataSetMain.CheckResult.Clear();
 
@@ -195,11 +184,11 @@ namespace EldarMailLogParse
                 case 1:
                     foreach (var iFrom in listBoxFromList.Items)
                         fromControl.Add(iFrom.ToString());
-                    foreach (DataRow iTo in dataSetMain.DataTableLogEmail.DefaultView.ToTable(true, "To").Rows)
+                    foreach (DataRow iTo in logDataTable.DefaultView.ToTable(true, "To").Rows)
                         toControl.Add(iTo["To"].ToString());
                     break;
                 case 2:
-                    foreach (DataRow iFrom in dataSetMain.DataTableLogEmail.DefaultView.ToTable(true, "From").Rows)
+                    foreach (DataRow iFrom in logDataTable.DefaultView.ToTable(true, "From").Rows)
                         fromControl.Add(iFrom["From"].ToString());
                     foreach (string iTo in listBoxToList.Items)
                         toControl.Add(iTo.ToString());
@@ -212,10 +201,6 @@ namespace EldarMailLogParse
                     break;
             }
 
-            int checkStep = fromControl.Count * toControl.Count;
-            int emailMax = progressBar.Maximum / checkStep;
-
-            int progresCount = 0;
 
             foreach (var iFrom in fromControl)
             {
@@ -248,24 +233,17 @@ namespace EldarMailLogParse
 
                     bool startCalculatingTime = false;
                     DateTime sendTime = DateTime.MinValue;
+                    decimal id = 0;
 
-                    DataSetMain.DataTableLogEmailRow[] drs = (DataSetMain.DataTableLogEmailRow[])dataSetMain.DataTableLogEmail.Select("(From = '" + itemFromWithDateTime[0] + "' AND To = '" + itemToWithDateTime[0] + "'"+((!checkBoxIncludeCC.Checked ? " AND IsMain=1" : "") +
+                    DataSetMain.DataTableLogEmailRow[] drs = (DataSetMain.DataTableLogEmailRow[])logDataTable.Select("(From = '" + itemFromWithDateTime[0] + "' AND To = '" + itemToWithDateTime[0] + "'"+((!checkBoxIncludeCC.Checked ? " AND IsMain=1" : "") +
                         " OR From = '" + itemToWithDateTime[0] + "' AND To = '" + itemFromWithDateTime[0] + "'" +  ")"
-                        + " AND Date >= '" + dateTimePickerFrom.Value.ToString("dd/MMM/yyyy") + " 00:00:00' AND Date<='" + dateTimePickerTo.Value.ToString("dd/MMM/yyyy") + " 23:59:59'"
                         ), "Date ASC");
 
                     
 
-                    int emailStep=0;
-                    if (drs.Length == 0)
-                        emailStep = emailMax;
-                    else
-                        emailStep = emailMax / drs.Length;
 
                     foreach (DataSetMain.DataTableLogEmailRow dr in drs)
                     {
-                        progressBar.Value = progressBar.Value + emailStep;
-                        Application.DoEvents();
 
                         if(startCalculatingTime == true)
                         {
@@ -277,12 +255,12 @@ namespace EldarMailLogParse
                                 TimeSpan lateDuration =DateTime.Parse(dr["Date"].ToString()) - sendTime;
                                 if (lateDuration.TotalHours > controlTime)
                                 {
-                                    dataSetMain.CheckResult.AddCheckResultRow(itemFromWithDateTime[0], sendTime, itemToWithDateTime[0], DateTime.Parse(dr["Date"].ToString()), "too late",  Math.Round(lateDuration.TotalHours,2));
+                                    dataSetMain.CheckResult.AddCheckResultRow(itemFromWithDateTime[0], sendTime, itemToWithDateTime[0], DateTime.Parse(dr["Date"].ToString()), "too late",  Math.Round(lateDuration.TotalHours,2),dr.ID);
                                 }
                             }
                             else
                             {
-                                dataSetMain.CheckResult.AddCheckResultRow(itemFromWithDateTime[0], sendTime, itemToWithDateTime[0], DateTime.MinValue, "not answered", 0);
+                                dataSetMain.CheckResult.AddCheckResultRow(itemFromWithDateTime[0], sendTime, itemToWithDateTime[0], DateTime.MinValue, "not answered", 0, dr.ID);
                             }
 
                             startCalculatingTime = false;
@@ -292,21 +270,18 @@ namespace EldarMailLogParse
                         {
                             startCalculatingTime = true;
                             sendTime = DateTime.Parse(dr["Date"].ToString());
+                            id = dr.ID;
                         }      
                     }
 
                     //check if not answered at all
                     if (startCalculatingTime == true)
                     {
-                        dataSetMain.CheckResult.AddCheckResultRow(itemFromWithDateTime[0], Convert.ToDateTime(sendTime), itemToWithDateTime[0], DateTime.MinValue, "not answered", 0);
+                        dataSetMain.CheckResult.AddCheckResultRow(itemFromWithDateTime[0], Convert.ToDateTime(sendTime), itemToWithDateTime[0], DateTime.MinValue, "not answered", 0,id);
                     }
 
-                    progresCount++;
-                    progressBar.Value = progresCount * emailMax - 1;
-                    Application.DoEvents();
                 }
             }
-            progressBar.Value = 0;
         }
 
         private void buttonCheckTo_Click(object sender, EventArgs e)
@@ -389,6 +364,106 @@ namespace EldarMailLogParse
             foreach (var iTo in Properties.Settings.Default.toControl)
                 listBoxToList.Items.Add(iTo.ToString());
 
+        }
+
+        private void buttonLoad_Click(object sender, EventArgs e)
+        {
+            saveSettings();
+
+            //clear data table before fill
+            dataSetMain.DataTableLogEmail.Clear();
+
+            using (SqlConnection connection = new SqlConnection())
+            {
+                try
+                {
+
+                    connection.ConnectionString = "Data Source=" + textBoxDBHost.Text +
+                       ";Initial Catalog=" + textBoxDBName.Text +
+                       ";Persist Security Info=True;User ID=" + textBoxDBLogin.Text +
+                       ";Password=" + textBoxDBPassword.Text + ";Connection Timeout=15";
+
+                    connection.Open();
+
+                    SqlCommand loadCmd = new SqlCommand(@"SELECT   mails.id AS ID,
+                                                                mails.sender_email AS [from],
+                                                                mail_recievers.email AS [to],
+                                                                mails.sendtime AS [Date], 
+                                                                ~ mail_recievers.cc AS isMain
+                                                     FROM    mail_recievers INNER JOIN
+                                                             mails ON dbo.mail_recievers.mail_id = dbo.mails.id"
+                        , connection);
+
+                    SqlDataReader reader = loadCmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        DataSetMain.DataTableLogEmailRow row = dataSetMain.DataTableLogEmail.NewDataTableLogEmailRow();
+
+                        row["ID"] = reader["ID"];
+                        row["from"] = reader["from"];
+                        row["to"] = reader["to"];
+                        row["Date"] = reader["Date"];
+                        row["isMain"] = reader["isMain"];
+
+                        dataSetMain.DataTableLogEmail.AddDataTableLogEmailRow(row);
+                    }
+
+                    //fill filter comboboxes by data table data
+                    comboBoxFromMailToAddList.DataSource = dataSetMain.DataTableLogEmail.DefaultView.ToTable(true, "From");
+                    comboBoxFromMailToAddList.DisplayMember = "From";
+
+                    comboBoxToMailToAddList.DataSource = dataSetMain.DataTableLogEmail.DefaultView.ToTable(true, "To");
+                    comboBoxToMailToAddList.DisplayMember = "To";
+
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void showMail(decimal id)
+        {
+            if (id > 0)
+            {
+                using (SqlConnection connection = new SqlConnection())
+                {
+                    try
+                    {
+
+                        connection.ConnectionString = "Data Source=" + textBoxDBHost.Text +
+                           ";Initial Catalog=" + textBoxDBName.Text +
+                           ";Persist Security Info=True;User ID=" + textBoxDBLogin.Text +
+                           ";Password=" + textBoxDBPassword.Text + ";Connection Timeout=15";
+
+                        connection.Open();
+
+                        SqlCommand cmd = new SqlCommand("SELECT [raw]  FROM [dbo].[mails] where ID="+id.ToString(), connection);
+
+                        Object raw = cmd.ExecuteScalar();
+
+                        String fileName = Path.Combine(Path.GetTempPath(),id.ToString()+".eml");
+                        File.WriteAllBytes(fileName, (byte[])raw);
+                        System.Diagnostics.Process.Start(fileName);
+
+                        connection.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+            }
+        }
+
+        private void checkResultDataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            decimal id = (decimal) checkResultDataGridView.Rows[e.RowIndex].Cells["ID"].Value;
+
+            showMail(id);
         }
     }
 }

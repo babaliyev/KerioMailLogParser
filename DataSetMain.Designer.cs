@@ -322,6 +322,8 @@ namespace EldarMailLogParse {
             
             private global::System.Data.DataColumn columnIsMain;
             
+            private global::System.Data.DataColumn columnID;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public DataTableLogEmailDataTable() {
@@ -389,6 +391,14 @@ namespace EldarMailLogParse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn IDColumn {
+                get {
+                    return this.columnID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -424,13 +434,14 @@ namespace EldarMailLogParse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataTableLogEmailRow AddDataTableLogEmailRow(string From, string To, System.DateTime Date, bool IsMain) {
+            public DataTableLogEmailRow AddDataTableLogEmailRow(string From, string To, System.DateTime Date, bool IsMain, decimal ID) {
                 DataTableLogEmailRow rowDataTableLogEmailRow = ((DataTableLogEmailRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         From,
                         To,
                         Date,
-                        IsMain};
+                        IsMain,
+                        ID};
                 rowDataTableLogEmailRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTableLogEmailRow);
                 return rowDataTableLogEmailRow;
@@ -457,6 +468,7 @@ namespace EldarMailLogParse {
                 this.columnTo = base.Columns["To"];
                 this.columnDate = base.Columns["Date"];
                 this.columnIsMain = base.Columns["IsMain"];
+                this.columnID = base.Columns["ID"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -470,6 +482,8 @@ namespace EldarMailLogParse {
                 base.Columns.Add(this.columnDate);
                 this.columnIsMain = new global::System.Data.DataColumn("IsMain", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnIsMain);
+                this.columnID = new global::System.Data.DataColumn("ID", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnID);
                 this.columnIsMain.AllowDBNull = false;
                 this.columnIsMain.DefaultValue = ((bool)(true));
             }
@@ -617,6 +631,8 @@ namespace EldarMailLogParse {
             
             private global::System.Data.DataColumn columnLateDuration;
             
+            private global::System.Data.DataColumn columnID;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public CheckResultDataTable() {
@@ -700,6 +716,14 @@ namespace EldarMailLogParse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn IDColumn {
+                get {
+                    return this.columnID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -735,7 +759,7 @@ namespace EldarMailLogParse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public CheckResultRow AddCheckResultRow(string FromMail, System.DateTime FromTime, string AnsweredMail, System.DateTime AnswerTime, string LateStatus, double LateDuration) {
+            public CheckResultRow AddCheckResultRow(string FromMail, System.DateTime FromTime, string AnsweredMail, System.DateTime AnswerTime, string LateStatus, double LateDuration, decimal ID) {
                 CheckResultRow rowCheckResultRow = ((CheckResultRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         FromMail,
@@ -743,7 +767,8 @@ namespace EldarMailLogParse {
                         AnsweredMail,
                         AnswerTime,
                         LateStatus,
-                        LateDuration};
+                        LateDuration,
+                        ID};
                 rowCheckResultRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowCheckResultRow);
                 return rowCheckResultRow;
@@ -772,6 +797,7 @@ namespace EldarMailLogParse {
                 this.columnAnswerTime = base.Columns["AnswerTime"];
                 this.columnLateStatus = base.Columns["LateStatus"];
                 this.columnLateDuration = base.Columns["LateDuration"];
+                this.columnID = base.Columns["ID"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -789,6 +815,8 @@ namespace EldarMailLogParse {
                 base.Columns.Add(this.columnLateStatus);
                 this.columnLateDuration = new global::System.Data.DataColumn("LateDuration", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLateDuration);
+                this.columnID = new global::System.Data.DataColumn("ID", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnID);
                 this.columnLateDuration.AllowDBNull = false;
                 this.columnLateDuration.DefaultValue = ((double)(0D));
             }
@@ -992,6 +1020,22 @@ namespace EldarMailLogParse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal ID {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTableLogEmail.IDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ID\' in table \'DataTableLogEmail\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTableLogEmail.IDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsFromNull() {
                 return this.IsNull(this.tableDataTableLogEmail.FromColumn);
             }
@@ -1024,6 +1068,18 @@ namespace EldarMailLogParse {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetDateNull() {
                 this[this.tableDataTableLogEmail.DateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsIDNull() {
+                return this.IsNull(this.tableDataTableLogEmail.IDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetIDNull() {
+                this[this.tableDataTableLogEmail.IDColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -1134,6 +1190,22 @@ namespace EldarMailLogParse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal ID {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCheckResult.IDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ID\' in table \'CheckResult\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCheckResult.IDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsFromMailNull() {
                 return this.IsNull(this.tableCheckResult.FromMailColumn);
             }
@@ -1190,6 +1262,18 @@ namespace EldarMailLogParse {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetLateStatusNull() {
                 this[this.tableCheckResult.LateStatusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsIDNull() {
+                return this.IsNull(this.tableCheckResult.IDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetIDNull() {
+                this[this.tableCheckResult.IDColumn] = global::System.Convert.DBNull;
             }
         }
         
