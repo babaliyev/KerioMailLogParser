@@ -86,7 +86,7 @@ namespace EldarMailLogParse
 
                     isMain = _from != from || _emailDate != emailDate;
 
-                    dataSetMain.DataTableLogEmail.AddDataTableLogEmailRow(from,to, emailDate,isMain,0);
+                    dataSetMain.DataTableLogEmail.AddDataTableLogEmailRow(from,to, emailDate,isMain,0,"");
 
                     _from = from;
                     _to = to;
@@ -172,7 +172,7 @@ namespace EldarMailLogParse
             DataSetMain.DataTableLogEmailRow[] drsTemp = (DataSetMain.DataTableLogEmailRow[])dataSetMain.DataTableLogEmail.Select("Date >= '" + dateTimePickerFrom.Value.ToString("dd/MMM/yyyy") + " 00:00:00' AND Date<='" + dateTimePickerTo.Value.ToString("dd/MMM/yyyy") + " 23:59:59'", "Date ASC");
 
             foreach (DataSetMain.DataTableLogEmailRow r in drsTemp)
-                logDataTable.AddDataTableLogEmailRow(r.From, r.To, r.Date, r.IsMain, r.ID);
+                logDataTable.AddDataTableLogEmailRow(r.From, r.To, r.Date, r.IsMain, r.ID, r.IsTitleNull()?" ":r.Title);
 
             dataSetMain.CheckResult.Clear();
 
@@ -233,7 +233,8 @@ namespace EldarMailLogParse
 
                     bool startCalculatingTime = false;
                     DateTime sendTime = DateTime.MinValue;
-                    decimal id = 0;
+                    decimal idFrom = 0;
+                    string title = "";
 
                     DataSetMain.DataTableLogEmailRow[] drs = (DataSetMain.DataTableLogEmailRow[])logDataTable.Select("(From = '" + itemFromWithDateTime[0] + "' AND To = '" + itemToWithDateTime[0] + "'"+((!checkBoxIncludeCC.Checked ? " AND IsMain=1" : "") +
                         " OR From = '" + itemToWithDateTime[0] + "' AND To = '" + itemFromWithDateTime[0] + "'" +  ")"
@@ -255,12 +256,12 @@ namespace EldarMailLogParse
                                 TimeSpan lateDuration =DateTime.Parse(dr["Date"].ToString()) - sendTime;
                                 if (lateDuration.TotalHours > controlTime)
                                 {
-                                    dataSetMain.CheckResult.AddCheckResultRow(itemFromWithDateTime[0], sendTime, itemToWithDateTime[0], DateTime.Parse(dr["Date"].ToString()), "too late",  Math.Round(lateDuration.TotalHours,2),dr.ID);
+                                    dataSetMain.CheckResult.AddCheckResultRow(itemFromWithDateTime[0], sendTime, itemToWithDateTime[0], DateTime.Parse(dr["Date"].ToString()), "too late",  Math.Round(lateDuration.TotalHours,2),dr.ID, idFrom, title);
                                 }
                             }
                             else
                             {
-                                dataSetMain.CheckResult.AddCheckResultRow(itemFromWithDateTime[0], sendTime, itemToWithDateTime[0], DateTime.MinValue, "not answered", 0, dr.ID);
+                                dataSetMain.CheckResult.AddCheckResultRow(itemFromWithDateTime[0], sendTime, itemToWithDateTime[0], DateTime.MinValue, "not answered", 0,0, dr.ID, title);
                             }
 
                             startCalculatingTime = false;
@@ -270,14 +271,15 @@ namespace EldarMailLogParse
                         {
                             startCalculatingTime = true;
                             sendTime = DateTime.Parse(dr["Date"].ToString());
-                            id = dr.ID;
+                            idFrom = dr.ID;
+                            title = dr.IsTitleNull()?"":dr.Title;
                         }      
                     }
 
                     //check if not answered at all
                     if (startCalculatingTime == true)
                     {
-                        dataSetMain.CheckResult.AddCheckResultRow(itemFromWithDateTime[0], Convert.ToDateTime(sendTime), itemToWithDateTime[0], DateTime.MinValue, "not answered", 0,id);
+                        dataSetMain.CheckResult.AddCheckResultRow(itemFromWithDateTime[0], Convert.ToDateTime(sendTime), itemToWithDateTime[0], DateTime.MinValue, "not answered", 0,0,idFrom,title);
                     }
 
                 }
@@ -389,9 +391,11 @@ namespace EldarMailLogParse
                                                                 mails.sender_email AS [from],
                                                                 mail_recievers.email AS [to],
                                                                 mails.sendtime AS [Date], 
-                                                                ~ mail_recievers.cc AS isMain
+                                                                ~ mail_recievers.cc AS isMain,
+                                                                mails.[title]
                                                      FROM    mail_recievers INNER JOIN
-                                                             mails ON dbo.mail_recievers.mail_id = dbo.mails.id"
+                                                             mails ON dbo.mail_recievers.mail_id = dbo.mails.id
+                                                    where mail_recievers.[email] is not null and mail_recievers.[email]<>''"
                         , connection);
 
                     SqlDataReader reader = loadCmd.ExecuteReader();
@@ -401,10 +405,11 @@ namespace EldarMailLogParse
                         DataSetMain.DataTableLogEmailRow row = dataSetMain.DataTableLogEmail.NewDataTableLogEmailRow();
 
                         row["ID"] = reader["ID"];
-                        row["from"] = reader["from"];
-                        row["to"] = reader["to"];
+                        row["from"] = reader["from"].ToString().Replace("'","").Replace(" ","").ToLower();
+                        row["to"] = reader["to"].ToString().Replace("'", "").Replace(" ", "").ToLower();
                         row["Date"] = reader["Date"];
                         row["isMain"] = reader["isMain"];
+                        row["title"] = reader["title"];
 
                         dataSetMain.DataTableLogEmail.AddDataTableLogEmailRow(row);
                     }
@@ -461,9 +466,115 @@ namespace EldarMailLogParse
 
         private void checkResultDataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            decimal id = (decimal) checkResultDataGridView.Rows[e.RowIndex].Cells["ID"].Value;
+            decimal id = 0;
+
+            switch (checkResultDataGridView.Columns[e.ColumnIndex].DataPropertyName)
+            {
+                case "FromMail":
+                case "FromTime":
+                    id = (decimal) checkResultDataGridView.Rows[e.RowIndex].Cells["FromMailID"].Value;
+                    break;
+                case "AnsweredMail":
+                case "AnswerTime":
+                    id = (decimal) checkResultDataGridView.Rows[e.RowIndex].Cells["AnsweredMailID"].Value;
+                    break;
+
+            }            
 
             showMail(id);
         }
+
+        private void populateListFromFile(string filePath, ListBox lb)
+        {
+            lb.Items.Clear();
+            using (StreamReader r = new StreamReader(filePath))
+            {
+                string line;
+                while ((line = r.ReadLine()) != null)
+                {
+                    lb.Items.Add(line);
+                }
+            }
+        }
+
+        private void saveListToFile(string filePath, ListBox lb)
+        {
+            using (FileStream S = File.Open(filePath, FileMode.CreateNew))
+            using (StreamWriter st = new StreamWriter(S))
+                foreach (string aa in lb.Items)
+                    st.WriteLine(aa);
+        }
+
+        private void buttonSaveFrom_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sf = new SaveFileDialog();
+            if (sf.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                saveListToFile(sf.FileName, listBoxFromList);
+        }
+
+        private void buttonLoadFrom_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog of = new OpenFileDialog();
+            if (of.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                populateListFromFile(of.FileName, listBoxFromList);
+        }
+
+        private void buttonSaveTo_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sf = new SaveFileDialog();
+            if (sf.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                saveListToFile(sf.FileName, listBoxToList);
+        }
+
+        private void buttonLoadTo_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog of = new OpenFileDialog();
+            if (of.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                populateListFromFile(of.FileName, listBoxToList);
+        }
+
+        private void saveComboBoxToCsV(ComboBox cb, String fileName)
+        {
+            string stOutput = "";
+
+            
+            // Export data.
+            for (int i = 0; i < cb.Items.Count; i++)
+            {
+                stOutput += ((DataRowView)cb.Items[i]).Row[0].ToString() + "\t\r\n";
+            }
+            Encoding utf16 = Encoding.GetEncoding(1254);
+            byte[] output = utf16.GetBytes(stOutput);
+            FileStream fs = new FileStream(fileName, FileMode.Create);
+            BinaryWriter bw = new BinaryWriter(fs);
+            bw.Write(output, 0, output.Length); //write the encoded file
+            bw.Flush();
+            bw.Close();
+            fs.Close();
+        }
+
+        private void buttonExportFrom_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Excel Documents (*.xls)|*.xls";
+            sfd.FileName = "exportFromList.xls";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                saveComboBoxToCsV(comboBoxFromMailToAddList, sfd.FileName);
+            } 
+        }
+
+        private void buttonExportTo_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Excel Documents (*.xls)|*.xls";
+            sfd.FileName = "exportToList.xls";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                saveComboBoxToCsV(comboBoxToMailToAddList, sfd.FileName);
+            } 
+        }
+
+
     }
 }
